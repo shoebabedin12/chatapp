@@ -1,0 +1,73 @@
+.sidenav {
+  background: #5f35f5;
+  border-radius: 20px;
+  padding: 38px 0px 38px 25px;
+  height: calc(100% - 0rem);
+  margin: 35px 0px;
+}
+.sidenav .profileImg {
+  margin-bottom: 20px;
+}
+.sidenav .profileImg img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+.sidenav .profileImg p {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Times New Roman", Times, serif;
+  line-height: 20px;
+}
+.sidenav .sideNavUl {
+  padding-left: 0;
+}
+.sidenav .sideNavUl li {
+  list-style: none;
+  padding-top: 19px;
+  padding-bottom: 19px;
+  padding-left: 45px;
+  border-radius: 20px 0px 0px 20px;
+  margin-bottom: 20px;
+}
+.sidenav .sideNavUl li svg path {
+  fill: #fff;
+}
+.sidenav .sideNavUl li.active svg path {
+  fill: #5f35f5;
+}
+.sidenav .sideNavUl li.active {
+  background: #fff;
+  position: relative;
+}
+.sidenav .sideNavUl li::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 100%;
+  background: #5f35f5;
+  box-shadow: -2px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 25px 0px 0px 25px;
+}
+.sidenav .sideNavUl li svg {
+  width: 46px;
+  height: 46px;
+}
+
+.sidenav .logOut {
+  background: transparent;
+  border: 0;
+  padding-top: 19px;
+  padding-bottom: 19px;
+  padding-left: 45px;
+}
+.sidenav .logOut svg {
+  width: 46px;
+  height: 46px;
+}
+.sidenav .logOut svg path {
+  fill: #fff;
+}

@@ -1,0 +1,11 @@
+.eye {
+  position: relative;
+  max-width: 200px;
+  height: 80px;
+}
+.eye .eyeIcon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+}
