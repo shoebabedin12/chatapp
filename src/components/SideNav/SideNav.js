@@ -38,7 +38,7 @@ const SideNav = (props) => {
       console.log('signout hoini');
     });
    }
-
+console.log(props.user);
    
   return (
     <div className="sidenav">

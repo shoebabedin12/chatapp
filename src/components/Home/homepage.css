@@ -1,0 +1,94 @@
+.three_dot {
+  cursor: pointer;
+}
+.group_request {
+  margin-top: 43px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  padding: 16px 13px;
+}
+.group_request .group_ttl {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.group_request .group_ttl h2 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 30px;
+  color: #000000;
+  margin-bottom: 17px;
+}
+
+.group_request .group_item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-bottom: 1px solid #000;
+  padding-bottom: 13px;
+  margin-bottom: 13px;
+  gap: 1rem;
+}
+.group_request .group_item:last-child {
+  border-bottom: 0px solid #000;
+}
+.group_request .group_item .group_img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.group_request .group_item .group_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.group_request .group_item .group_btn button {
+  background: #5f35f5;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 30px;
+  color: #ffffff;
+  border: none;
+}
+.group_request .group_item .group_title h4 {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 27px;
+  color: #000000;
+}
+.group_request .group_item .group_title p {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+  color: rgba(77, 77, 77, 0.75);
+}
+.friends {
+  height: calc(100% - 0rem);
+}
+.friends .group_item .group_img {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.friends .group_item .group_title h4 {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+  color: #000000;
+}
+.friends .group_item .group_title p {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgba(77, 77, 77, 0.75);
+}
+.friends .group_item .group_btn p {
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 15px;
+  color: rgba(0, 0, 0, 0.5);
+}

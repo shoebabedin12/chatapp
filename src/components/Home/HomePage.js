@@ -2,6 +2,7 @@ import { Alert } from "@mui/material";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import './homepage.css';
 import MainHomePage from "./MainHomePage";
 
 const HomePage = () => {

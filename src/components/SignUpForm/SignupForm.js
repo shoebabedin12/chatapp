@@ -6,6 +6,7 @@ import {
   getAuth,
   sendEmailVerification
 } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SignupForm.css";
@@ -13,6 +14,7 @@ import "./SignupForm.css";
 const SignupForm = () => {
   // firebase
   const auth = getAuth();
+  const db = getDatabase();
   const [open, setOpen] = useState(false);
   // firebase`
   let navigate = useNavigate();
@@ -53,7 +55,12 @@ const SignupForm = () => {
         .then((user) => {
           sendEmailVerification(auth.currentUser).then(() => {
             console.log("email send for verification");
+            set(ref(db, 'users/' + auth.currentUser.uid), {
+              username: name,
+              email: email,
+            });
             navigate("/");
+            
           });
         })
         .catch((error) => {
