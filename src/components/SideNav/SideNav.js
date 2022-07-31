@@ -21,7 +21,6 @@ const style = {
 };
 
 const SideNav = (props) => {
-
   const auth = getAuth();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -38,7 +37,9 @@ const SideNav = (props) => {
       console.log('signout hoini');
     });
    }
-console.log(props.user);
+// console.log(props.user);
+
+
    
   return (
     <div className="sidenav">

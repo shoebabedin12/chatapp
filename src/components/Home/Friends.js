@@ -5,7 +5,7 @@ const Friends = () => {
     <div>
       <div className="group_request friends">
         <div className="group_ttl">
-          <h2>Group Request</h2>
+          <h2>Friends</h2>
           <BsThreeDotsVertical/>
         </div>
         <div className="group_item">
