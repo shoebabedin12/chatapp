@@ -11,8 +11,7 @@ import { Container } from "@mui/system";
 import {
   FacebookAuthProvider,
   getAuth,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
+  GoogleAuthProvider, signInWithEmailAndPassword,
   signInWithPopup
 } from "firebase/auth";
 import { useState } from "react";
@@ -117,6 +116,7 @@ const Login = () => {
         // ...
       });
   };
+ 
 
   return (
     <>
@@ -157,6 +157,8 @@ const Login = () => {
                 </Button>{" "}
               </div>
             </div>
+            <br />
+            <br />
             <div className="eye">
               <TextField
                 helperText={emailerr}
@@ -182,7 +184,7 @@ const Login = () => {
                 {checkPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
               </span>
             </div>
-
+            <div><Link to="/reset-password">Forgot Password</Link></div>
             <br />
             <Button
               variant="contained mb-5"
@@ -191,7 +193,7 @@ const Login = () => {
             >
               Login to Continue
             </Button>
-
+              
             <p>
               Don’t have an account? <Link to="/Signup">Sign up</Link>
             </p>

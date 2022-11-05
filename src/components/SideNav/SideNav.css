@@ -6,16 +6,22 @@
   background: #5f35f5;
   border-radius: 20px;
   padding: 38px 0px 38px 25px;
-  height: calc(100% - 0rem);
+  /* height: calc(100% - 0rem); */
   margin: 35px 0px;
 }
 .sidenav .profileImg {
   margin-bottom: 20px;
 }
-.sidenav .profileImg img {
+.sidenav .profileImg .UserProfile {
   width: 100px;
   height: 100px;
   border-radius: 50%;
+  margin: 0 auto;
+}
+.sidenav .profileImg .UserProfile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .sidenav .profileImg p {
   color: #fff;
@@ -24,6 +30,26 @@
   font-family: "Times New Roman", Times, serif;
   line-height: 20px;
 }
+.sidenav .profileImg .UserProfile {
+  position: relative;
+  overflow: hidden;
+}
+.sidenav .profileImg .UserProfile .uploadPic {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  transform: translateY(100%);
+  transition: all linear 0.4s;
+  cursor: pointer;
+}
+.sidenav .profileImg .UserProfile:hover .uploadPic {
+  transform: translateY(0%);
+  transition: all linear 0.4s;
+}
+
 .sidenav .sideNavUl {
   padding-left: 0;
 }
@@ -80,6 +106,8 @@
   background: #fff;
   border: 0px !important;
   border-radius: 10px;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
 }
 
 .modalProfile .img {
@@ -107,4 +135,18 @@
   font-size: 20px;
   line-height: 30px;
   color: #000000;
+}
+
+/* cropping image */
+.box {
+  display: inline-block;
+  padding: 10px;
+  box-sizing: border-box;
+  width: 100px;
+  height: 100px;
+}
+.img-preview {
+  overflow: hidden;
+  width: 100px;
+  height: 100px;
 }

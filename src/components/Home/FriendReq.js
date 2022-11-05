@@ -1,11 +1,16 @@
-import { getDatabase, onValue, ref } from "firebase/database";
+import { Alert } from "@mui/material";
+import { getAuth } from "firebase/auth";
+import { getDatabase, onValue, push, ref, remove, set } from "firebase/database";
 import { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 const FriendReq = () => {
   const db = getDatabase();
-  
+  const auth = getAuth();
+
   const [friendReqList, setFriendReqList] = useState([]);
+  let [emptyMsg, setEmptyMsg] = useState("");
+  let [dlt, setDlt] = useState(true);
 
   useEffect(() => {
     const friendRequestArr = [];
@@ -13,17 +18,38 @@ const FriendReq = () => {
     onValue(friendRequestRef, (snapshot) => {
       const data = snapshot.val();
       snapshot.forEach((item) => {
-        friendRequestArr.push({
-          name: item.val().name,
-          receiverid: item.val().receiverid,
-          senderid: item.val().senderid,
-        });
+        if (item.val().receiverid === auth.currentUser.uid) {
+          friendRequestArr.push({
+            id: item.key,
+            receiverName: item.val().receiverName,
+            receiverid: item.val().receiverid,
+            senderName: item.val().senderName,
+            senderid: item.val().senderid,
+          });
+        } 
+       
       });
+      setEmptyMsg("You have no friend request");
       setFriendReqList(friendRequestArr);
     });
-  }, []);
+  }, [dlt]);
 
-  console.log(friendReqList);
+  const handleAcceptFriend = (friend) => {
+    set(push(ref(db, 'friend/')), {
+      id: friend.id,
+      receiverName: friend.receiverName,
+      receiverid: friend.receiverid,
+      senderName: friend.senderName,
+      senderid: friend.senderid,
+      date: `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear()}`,
+    })
+    .then((
+      remove(ref(db, "friendrequest/" + friend.id))
+      .then((
+        setDlt(!dlt)
+      ))
+    ))
+  }
 
   return (
     <div>
@@ -35,7 +61,7 @@ const FriendReq = () => {
           three_dot"
           />
         </div>
-        {friendReqList.map(list => (
+        {friendReqList.map((list) => (
           <div className="group_item">
             <div className="group_img">
               <img
@@ -44,13 +70,15 @@ const FriendReq = () => {
               />
             </div>
             <div className="group_title">
-              <h4>{list.name}</h4>
+              <h4>{list.senderName}</h4>
             </div>
             <div className="group_btn">
-              <button>Accept</button>
+              <button onClick={() => handleAcceptFriend(list)}>Accept</button>
             </div>
           </div>
         ))}
+
+        {friendReqList.length === 0 && <Alert severity="info">{emptyMsg}</Alert>}
       </div>
     </div>
   );

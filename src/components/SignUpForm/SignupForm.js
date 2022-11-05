@@ -4,7 +4,8 @@ import { Container } from "@mui/system";
 import {
   createUserWithEmailAndPassword,
   getAuth,
-  sendEmailVerification
+  sendEmailVerification,
+  updateProfile
 } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 import { useState } from "react";
@@ -52,9 +53,22 @@ const SignupForm = () => {
     } else {
       setPasswordmatcherr("");
       createUserWithEmailAndPassword(auth, email, password)
-        .then((user) => {
-          sendEmailVerification(auth.currentUser).then(() => {
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+          sendEmailVerification(auth.currentUser)
+          .then(() => {
             console.log("email send for verification");
+            updateProfile(auth.currentUser, {
+              displayName: name,
+            }).then(() => {
+              // Profile updated!
+              // ...
+            }).catch((error) => {
+              // An error occurred
+              // ...
+            });
+            
             set(ref(db, 'users/' + auth.currentUser.uid), {
               username: name,
               email: email,

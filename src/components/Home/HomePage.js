@@ -14,11 +14,12 @@ const HomePage = () => {
   let [userDetails, setUserDetails] = useState('')
 
   useEffect (() => { 
+    
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setEmailVerify(user.emailVerified);
         const uid = user.uid;
-        console.log(user);
+        // console.log(user);
         setUserDetails(user)
         
       } else {
@@ -26,12 +27,14 @@ const HomePage = () => {
         navigate('/')
       }
     });
-  },[])
+  },[]);
+
   return (
     <>
+      
      {
       emailVerify ?
-      <MainHomePage user={userDetails}/>
+      <MainHomePage user={userDetails} class/>
       :
       <Alert severity="error">Please check your email for verify</Alert>
      }
