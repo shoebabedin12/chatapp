@@ -11,6 +11,7 @@ import { ImExit } from "react-icons/im";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { Link } from "react-router-dom";
 import "./SideNav.css";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -45,6 +46,8 @@ const SideNav = (props) => {
   const [cropData, setCropData] = useState("#");
   const [cropper, setCropper] = useState();
 
+  const navigate = useNavigate();
+
 
 
 
@@ -52,6 +55,7 @@ const SideNav = (props) => {
     signOut(auth).then(() => {
       // Sign-out successful.
       console.log('Sign-out successful.');
+      navigate('/')
     }).catch((error) => {
       // An error happened.
       console.log('signout hoini');
