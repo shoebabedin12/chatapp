@@ -4,12 +4,12 @@ import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useSelector } from "react-redux";
 
+
 const ChatArea = () => {
   const db = getDatabase();
   const auth = getAuth();
 
-  const user = useSelector((state) => state.activeChat.value);
-  console.log("chat area", user);
+  const user = useSelector((state) => state.activeChat.active);
 
   const [isactive, setIsActive] = useState(true);
   const [msg, setMsg] = useState("");
@@ -21,7 +21,6 @@ const ChatArea = () => {
 
   const msgSubmit = () => {
     if (msg !== "") {
-      console.log(user);
       if (user.status == "group") {
         console.log("this is group");
       } else {
@@ -32,25 +31,30 @@ const ChatArea = () => {
           whoreceive: user.id,
           msg: msg,
         });
+        setMsg("")
       }
     }
   };
+
 
   useEffect(() => {
     onValue(ref(db, "singlemsg"), (snapshot) => {
       let msgarr = [];
       snapshot.forEach((item) => {
-        msgarr.push(item.val());
+   if(item.val().whosnedid == auth.currentUser.uid && item.val().whoreceive == user.id ||
+   
+   item.val().whosnedid == user.id && item.val().whoreceive == auth.currentUser.uid)
+          msgarr.push(item.val())
       });
       setMsglist(msgarr);
     });
-  }, []);
+  }, [user.id]);
+console.log('msglist', msglist);
 
-  console.log("sms list",msglist);
 
   return (
     <>
-      {user ? (
+     
         <div className="group_request chatarea">
           <div className="group_ttl">
             <div className="chatHead">
@@ -108,14 +112,14 @@ const ChatArea = () => {
           </div>
 
           <div className="ChatBody">
-            {msglist.map((item) => 
-              item.whosnedid == auth.currentUser.uid ? (
-                <div className="msg right">
+            {msglist.map((item, index) =>
+              item.whosnedid === auth.currentUser.uid ? (
+                <div key={index} className="msg right">
                   <p className="text">{item.msg}</p>
                   <p className="date">20.10.2022</p>
                 </div>
               ) : (
-                <div className="msg left">
+                <div key={index} className="msg left">
                   <p className="text">{item.msg}</p>
                   <p className="date">20.10.2022</p>
                 </div>
@@ -154,9 +158,7 @@ const ChatArea = () => {
             </button>
           </div>
         </div>
-      ) : (
-        <p>Chat Area</p>
-      )}
+       
     </>
   );
 };

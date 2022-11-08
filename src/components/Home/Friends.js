@@ -20,7 +20,6 @@ const Friends = () => {
     const friendArr = [];
     const friendRef = ref(db, "friend/");
     onValue(friendRef, (snapshot) => {
-      const data = snapshot.val();
       snapshot.forEach((item) => {
         if (auth.currentUser.uid === item.val().senderid || auth.currentUser.uid === item.val().receiverid) {
           friendArr.push({

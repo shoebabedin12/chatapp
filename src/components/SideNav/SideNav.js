@@ -9,9 +9,8 @@ import { AiFillEdit, AiFillHome, AiOutlineCloudUpload, AiOutlineSetting } from "
 import { BsChatDotsFill } from "react-icons/bs";
 import { ImExit } from "react-icons/im";
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./SideNav.css";
-import { useNavigate } from "react-router-dom";
 
 
 
@@ -236,22 +235,22 @@ e.preventDefault();
       
       <ul className="sideNavUl">
       
-        <li className={props.active === "home" && "active"}>
+        <li className={props.active === "home" ? "active" : ""}>
           <Link to="/home">
             <AiFillHome />
           </Link>
         </li>
-        <li className={props.active === "chat" && "active"}>
+        <li className={props.active === "chat" ? "active" : ""}>
           <Link to="/chat">
             <BsChatDotsFill />
           </Link>
         </li>
-        <li className={props.active === "notification" && "active"}>
+        <li className={props.active === "notification" ? "active" : ""}>
           <Link to="#">
             <IoMdNotificationsOutline />
           </Link>
         </li>
-        <li className={props.active === "setting" && "active"}>
+        <li className={props.active === "setting" ? "active" : ""}>
           <Link to="#">
             <AiOutlineSetting />
           </Link>
