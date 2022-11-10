@@ -36,6 +36,46 @@
 .chatarea .ChatBody .msg {
   margin-bottom: 5px;
 }
+.chatarea .ChatBody .msg.right .img {
+  max-width: 300px;
+  background: #5f35f5;
+  padding: 10px;
+  border-radius: 10px;
+  margin-right: 5px;
+  position: relative;
+}
+.chatarea .ChatBody .msg.right .img::after {
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  right: -5px;
+  width: 0;
+  height: 0;
+  border-bottom: 14px solid #5f35f5;
+  border-right: 20px solid transparent;
+  z-index: -1;
+}
+.chatarea .ChatBody .msg.left .img {
+  max-width: 300px;
+  width: 100%;
+  background: #f1f1f1;
+  padding: 10px;
+  border-radius: 10px;
+  margin-left: 5px;
+  position: relative;
+}
+.chatarea .ChatBody .msg.left .img::after {
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  left: -5px;
+  width: 0;
+  height: 0;
+  border-bottom: 14px solid #f1f1f1;
+  border-left: 20px solid transparent;
+  z-index: -1;
+}
+
 .chatarea .ChatBody .msg .text {
   width: max-content;
   position: relative;
@@ -101,6 +141,16 @@
   height: 45px;
   padding-left: 40px;
   padding-right: 100px;
+}
+.chatarea .ChatFooter .msginput {
+  position: relative;
+}
+.chatarea .ChatFooter .msginput .msgcamera {
+  position: absolute;
+  top: 50%;
+  right: 2%;
+  transform: translate(-2%, -50%);
+  cursor: pointer;
 }
 .chatarea .ChatFooter button {
   width: 45px;
