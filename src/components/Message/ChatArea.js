@@ -1,9 +1,15 @@
 import { Box, Button, LinearProgress, Modal, Typography } from "@mui/material";
 import { getAuth } from "firebase/auth";
 import { getDatabase, onValue, push, ref, set } from "firebase/database";
-import { getDownloadURL, getStorage, ref as sref, uploadBytesResumable } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref as sref,
+  uploadBytesResumable
+} from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import Moment from "react-moment";
 import { useSelector } from "react-redux";
 
 const style = {
@@ -23,7 +29,6 @@ const ChatArea = () => {
   const auth = getAuth();
   const storage = getStorage();
 
-
   const user = useSelector((state) => state.activeChat.active);
 
   const [isactive, setIsActive] = useState(true);
@@ -33,8 +38,8 @@ const ChatArea = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [file, setFile] = useState(null)
-  const [progress, setProgress] = useState(0)
+  const [file, setFile] = useState(null);
+  const [progress, setProgress] = useState(0);
 
   const handlemsg = (e) => {
     setMsg(e.target.value);
@@ -51,8 +56,14 @@ const ChatArea = () => {
           whoreceivename: user.name,
           whoreceive: user.id,
           msg: msg,
+          date: new Date().getDate() + "/"
+          + (new Date().getMonth()+1)  + "/" 
+          + new Date().getFullYear() + " @ "  
+          + new Date().getHours() + ":"  
+          + new Date().getMinutes() + ":" 
+          + new Date().getSeconds(),
         }).then(() => {
-          setMsg("")
+          setMsg("");
         });
       }
     }
@@ -76,48 +87,52 @@ const ChatArea = () => {
 
   const handleSingleImageUpload = (e) => {
     setFile(e.target.files[0]);
-    
   };
 
-
   const handleUploadSingleImage = () => {
-    const singleImageRef = sref(storage, 'singleimage/' + file.name);
+    const singleImageRef = sref(storage, "singleimage/" + file.name);
     const uploadTask = uploadBytesResumable(singleImageRef, file);
 
-    uploadTask.on('state_changed', 
-  (snapshot) => {
-    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    console.log('Upload is ' + progress + '% done');
-    setProgress(progress)
-    
-  }, 
-  (error) => {
-    console.log(error);
-  }, 
-  () => {
-    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-      console.log('File available at', downloadURL);
-      if (file !== "") {
-        if (user.status == "group") {
-          console.log("this is group");
-        } else {
-          set(push(ref(db, "singlemsg")), {
-            whosnedid: auth.currentUser.uid,
-            whosnedname: auth.currentUser.displayName,
-            whoreceivename: user.name,
-            whoreceive: user.id,
-            img: downloadURL,
-          })
-          .then(() => {
-            setMsg("")
-            handleClose(false)
-          });
-        }
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+        setProgress(progress);
+      },
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log("File available at", downloadURL);
+          if (file !== "") {
+            if (user.status == "group") {
+              console.log("this is group");
+            } else {
+              set(push(ref(db, "singlemsg")), {
+                whosnedid: auth.currentUser.uid,
+                whosnedname: auth.currentUser.displayName,
+                whoreceivename: user.name,
+                whoreceive: user.id,
+                img: downloadURL,
+                date: new Date().getDate() + "/"
+          + (new Date().getMonth()+1)  + "/" 
+          + new Date().getFullYear() + " @ "  
+          + new Date().getHours() + ":"  
+          + new Date().getMinutes() + ":" 
+          + new Date().getSeconds(),
+              }).then(() => {
+                setMsg("");
+                handleClose(false);
+              });
+            }
+          }
+        });
       }
-    });
-  }
-);
-  }
+    );
+  };
 
   return (
     <>
@@ -180,28 +195,39 @@ const ChatArea = () => {
         <div className="ChatBody">
           {msglist.map((item, index) =>
             item.whosnedid === auth.currentUser.uid ? (
-              item.msg ?
-              <div key={index} className="msg right">
+              item.msg ? (
+                <div key={index} className="msg right">
+                  <p className="text">{item.msg}</p>
+                  <p className="date">
+                    <Moment fromNow>{item.date}</Moment>
+                  </p>
+                </div>
+              ) : (
+                <div key={index} className="msg right">
+                  <div className="img">
+                    <img className="img-fluid w-100" src={item.img} alt="" />
+                  </div>
+                  <p className="date">
+                    <Moment fromNow>{item.date}</Moment>
+                  </p>
+                </div>
+              )
+            ) : item.msg ? (
+              <div key={index} className="msg left">
                 <p className="text">{item.msg}</p>
-                <p className="date">20.10.2022</p>
-              </div>
-              :
-              <div key={index} className="msg right">
-                <div className="img">
-                  <img className="img-fluid w-100" src={item.img} alt="" /></div>
-                <p className="date">20.10.2022</p>
+                <p className="date">
+                  <Moment fromNow>{item.date}</Moment>
+                </p>
               </div>
             ) : (
-              item.msg ?
               <div key={index} className="msg left">
-                <p className="text">{item.msg}</p>
-                <p className="date">20.10.2022</p>
+                <div className="img">
+                  <img className="img-fluid w-100" src={item.img} alt="" />
+                </div>
+                <p className="date">
+                  <Moment fromNow>{item.date}</Moment>
+                </p>
               </div>
-              :
-              <div key={index} className="msg left">
-              <div className="img"><img className="img-fluid w-100" src={item.img} alt="" /></div>
-              <p className="date">20.10.2022</p>
-            </div>
             )
           )}
         </div>
@@ -267,12 +293,21 @@ const ChatArea = () => {
             Select Your Image
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <input className="mb-3"
+            <input
+              className="mb-3"
               type="file"
               onChange={handleSingleImageUpload}
             />
-            <LinearProgress value={progress}  variant="determinate" className="mb-3"/>
-            <Button onClick={handleUploadSingleImage} variant="contained" color="success">
+            <LinearProgress
+              value={progress}
+              variant="determinate"
+              className="mb-3"
+            />
+            <Button
+              onClick={handleUploadSingleImage}
+              variant="contained"
+              color="success"
+            >
               Upload
             </Button>
           </Typography>
