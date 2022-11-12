@@ -145,17 +145,18 @@ const Login = () => {
                 {wrongEmailerr ? wrongEmailerr : wrongPasserr && wrongPasserr}
               </Alert>
             </Collapse>
-            <div className="d-flex">
+            <div className="d-flex align-center">
+              <p>Sign in with - </p>
               <div className="google">
                 <Button variant="outline-primary" onClick={handleGoogle}>
                   Google
                 </Button>{" "}
               </div>
-              <div className="fb">
+              {/* <div className="fb">
                 <Button variant="outline-success" onClick={handleFacebook}>
                   Facebook
                 </Button>{" "}
-              </div>
+              </div> */}
             </div>
             <br />
             <br />

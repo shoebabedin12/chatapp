@@ -1,9 +1,11 @@
 import { Alert } from "@mui/material";
 import { getAuth } from "firebase/auth";
-import { getDatabase, onValue, ref } from "firebase/database";
+import { getDatabase, onValue, push, ref, remove, set } from "firebase/database";
 import { useEffect, useState } from "react";
+import { BiBlock } from "react-icons/bi";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { activeChat } from "../../slice/activeChatSlice";
 
 const Friends = () => {
@@ -12,16 +14,19 @@ const Friends = () => {
   const dispatch = useDispatch();
   const [friends, setFriends] = useState([]);
   let [emptyMsg, setEmptyMsg] = useState("");
+  let location = useLocation();
 
-
-
+  console.log("location", location.pathname);
 
   useEffect(() => {
-    const friendArr = [];
     const friendRef = ref(db, "friend/");
     onValue(friendRef, (snapshot) => {
+      const friendArr = [];
       snapshot.forEach((item) => {
-        if (auth.currentUser.uid === item.val().senderid || auth.currentUser.uid === item.val().receiverid) {
+        if (
+          auth.currentUser.uid === item.val().senderid ||
+          auth.currentUser.uid === item.val().receiverid
+        ) {
           friendArr.push({
             id: item.key,
             receiverid: item.val().receiverid,
@@ -31,35 +36,48 @@ const Friends = () => {
             date: item.val().date,
           });
         }
-       
       });
       setFriends(friendArr);
       setEmptyMsg("You have no friend");
     });
   }, []);
 
-
   const handleChat = (item) => {
-    let userInfo = {}
+    let userInfo = {};
     if (item.receiverid === auth.currentUser.uid) {
       userInfo.status = "single";
       userInfo.id = item.senderid;
       userInfo.name = item.senderName;
-    }
-    else{
+    } else {
       userInfo.status = "single";
       userInfo.id = item.receiverid;
       userInfo.name = item.receiverName;
     }
     dispatch(activeChat(userInfo));
-    
+  };
+
+
+  const handleBlock = (info) => {
+    console.log('info', info);
+    set(push(ref(db, 'blockuser/')), {
+      id: info.id,
+      blockedusername: info.senderName,
+      blockeduserid: info.senderid,
+      blockbyname: info.receiverName,
+      blcokbyid: info.receiverid,
+    })
+    .then((
+      remove(ref(db, "friend/" + info.id))
+    ))
   }
 
   return (
     <div>
       <div className="group_request friends">
         <div className="group_ttl">
-          <h2>{friends.length > 1 ? "Friends" : "Friend"} - ({friends.length})</h2>
+          <h2>
+            {friends.length > 1 ? "Friends" : "Friend"} - ({friends.length})
+          </h2>
           <BsThreeDotsVertical />
         </div>
         {friends.length === 0 && <Alert severity="info">{emptyMsg}</Alert>}
@@ -72,18 +90,26 @@ const Friends = () => {
               />
             </div>
             <div className="group_title">
-              {auth.currentUser.uid == item.senderid ?
+              {auth.currentUser.uid == item.senderid ? (
                 <h4>{item.receiverName} </h4>
-                :
-                  <h4>{item.senderName} </h4>
-              }
-              
+              ) : (
+                <h4>{item.senderName} </h4>
+              )}
+
               <p>Hi Guys, Wassup!</p>
             </div>
             <div className="group_btn">
               <p>{item.date}</p>
             </div>
-            <button onClick={() => handleChat(item)}>Chat</button>
+            <div className="group_btn d-flex align-middle justify-content-center">
+              {location.pathname === "/chat" ? (
+                <button onClick={() => handleChat(item)}>chat</button>
+              ) : (
+                <button onClick={() => handleBlock(item)}>
+                  <BiBlock />
+                </button>
+              )}
+            </div>
           </div>
         ))}
       </div>
