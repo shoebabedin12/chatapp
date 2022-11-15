@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth";
-import { getDatabase, onValue, ref } from "firebase/database";
+import { getDatabase, onValue, push, ref, remove, set } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
@@ -31,6 +31,22 @@ const BlockUser = () => {
       setBlocklist(blockArr);
     });
   }, []);
+
+
+  const handleUnblock = (info) => {
+    console.log("block user", info)
+    set(push(ref(db, 'friend/')), {
+      keyid: info.keyid,
+      id: info.id,
+      senderName: info.blockedusername,
+      senderid: info.blockeduserid,
+      receiverName: info.blockbyname,
+      receiverid: info.blcokbyid,
+    })
+    .then((
+      remove(ref(db, "blockuser/" + info.keyid))
+    ))
+  }
   return (
     <div>
       <div className="group_request friends">
@@ -56,7 +72,7 @@ const BlockUser = () => {
               <p>Hi Guys, Wassup!</p>
             </div>
             <div className="group_btn">
-              <button>Unblock</button>
+              <button onClick={() => handleUnblock(item)}>Unblock</button>
             </div>
           </div>
         ))
