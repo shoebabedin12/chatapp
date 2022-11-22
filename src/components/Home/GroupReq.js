@@ -27,6 +27,7 @@ const GroupReq = (props) => {
   const [name, setName] = useState("");
   const [tagList, setTagList] = useState("");
   const [groupList, setGroupList] = useState([]);
+  const [groupCheckUser, setGroupCheckUser] = useState([]);
 
   // create Group
   const createGroup = () => {
@@ -44,9 +45,9 @@ const GroupReq = (props) => {
 
   // group data fetch from database
   useEffect(() => {
-    const arr = [];
     const starCountRef = ref(db, "CreateGroup");
     onValue(starCountRef, (snapshot) => {
+    const arr = [];
       snapshot.forEach((item) => {
         let groupInfo = {
           adminID: item.val().Adminid,
@@ -69,8 +70,34 @@ const GroupReq = (props) => {
       userName: auth.currentUser.displayName,
       userProfile: auth.currentUser.photoURL,
     });    
+    set(push(ref(db, "notification")), {
+      adminId: id,
+      groupId: key,
+      userId: auth.currentUser.uid,
+      userName: auth.currentUser.displayName,
+      userProfile: auth.currentUser.photoURL,
+    });    
   }
 
+
+  useEffect(() => {
+    const starCountRef = ref(db, "groupmember");
+      onValue(starCountRef, (snapshot) => {
+        const arr = [];
+        snapshot.forEach((item) => {
+          if(item.val().userid === auth.currentUser.uid ){
+            let joingroup = {
+              gid: item.val().gid,
+            }
+            arr.push(joingroup.gid);
+          }
+           
+        });
+        setGroupCheckUser(arr);
+      });
+  },[])
+
+  console.log(groupCheckUser.indexOf());
  
   
   return (
@@ -109,6 +136,7 @@ const GroupReq = (props) => {
                   />
                 </div>
                 <div className="mb-4">
+                  
                   <button onClick={createGroup} className="btn btn-success">
                     Create
                   </button>
@@ -133,10 +161,17 @@ const GroupReq = (props) => {
                     <div className="group_title">
                       <h4>{item.groupName}</h4>
                       <p>{item.groupTagLine}</p>
+                      <p>{item.key}</p>
                     </div>
                   </div>
                   <div className="group_btn">
-                    <button onClick={() => handleGroupRequest(item.adminID, item.key)}>Join</button>
+                  {groupCheckUser.indexOf(item.key) === -1  ?
+                    
+                  <button onClick={() => handleGroupRequest(item.adminID, item.key)}>Join</button>
+                  :
+                  <button>Joined</button>
+                 
+                  }
                   </div>
                 </div>
               )

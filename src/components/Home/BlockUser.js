@@ -25,6 +25,7 @@ const BlockUser = () => {
           blockeduserid: item.val().blockeduserid,
           blcokbyid: item.val().blcokbyid,
           blockbyname: item.val().blockbyname,
+          date: item.val().date,
         });
         }
       });
@@ -42,6 +43,7 @@ const BlockUser = () => {
       senderid: info.blockeduserid,
       receiverName: info.blockbyname,
       receiverid: info.blcokbyid,
+      date: info.date,
     })
     .then((
       remove(ref(db, "blockuser/" + info.keyid))

@@ -65,6 +65,7 @@ const Friends = () => {
       blockeduserid: info.senderid,
       blockbyname: info.receiverName,
       blcokbyid: info.receiverid,
+      date: info.date,
     })
     .then((
       remove(ref(db, "friend/" + info.id))
